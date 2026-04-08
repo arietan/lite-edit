@@ -1,6 +1,6 @@
 # LiteEdit
 
-A lightweight, fast code editor for macOS — built entirely with Swift and AppKit. No Electron, no web views, no bloat.
+The fastest way to open, browse, and quick-edit code on macOS — a native editor under 1 MB, built entirely with Swift and AppKit.
 
 [![macOS 13+](https://img.shields.io/badge/macOS-13%2B-blue)](https://arietan.github.io/lite-edit/)
 [![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange)](https://arietan.github.io/lite-edit/)
@@ -9,9 +9,34 @@ A lightweight, fast code editor for macOS — built entirely with Swift and AppK
 
 **[Website](https://arietan.github.io/lite-edit/)** · **[Download](https://github.com/arietan/lite-edit/releases/latest)** · **[Source](https://github.com/arietan/lite-edit)**
 
+---
+
+## Demo
+
+<!-- Replace with a GIF or screenshot of LiteEdit in action -->
+<!-- Recommended: record a 20-30s screen capture showing: open folder → browse tree → quick open → edit → save -->
+> **Screenshot / GIF coming soon** — see the [website](https://arietan.github.io/lite-edit/) for a live preview.
+
+---
+
+## Who This Is For
+
+LiteEdit is for macOS developers who want a **fast, zero-overhead editor** alongside their main IDE. Use it when you want to:
+
+- **Open a repo instantly** — browse code and read through files without waiting for VS Code to load
+- **Make quick edits** — fix a typo, tweak a config, update a script, and close
+- **Review files** — read through Markdown, JSON, YAML, or logs with syntax highlighting and zero lag
+- **Stay in flow** — keep a snappy editor open for side tasks while your IDE handles the heavy project
+
+### Who This Is Not For
+
+LiteEdit is not trying to replace VS Code, Xcode, or Sublime Text. If you need extensions, LSP, integrated terminals, or Git UI, use those. LiteEdit is the tool you reach for when you want to **open, read, edit, and move on — in seconds**.
+
+---
+
 ## Why LiteEdit?
 
-Most code editors today ship hundreds of megabytes of bundled runtimes, web engines, and frameworks before you even open a file. LiteEdit takes the opposite approach: a single native binary under 1 MB that launches instantly and uses minimal resources.
+Most code editors ship hundreds of megabytes of bundled runtimes, web engines, and frameworks before you even open a file. LiteEdit takes the opposite approach: a single native binary under 1 MB that launches instantly and uses minimal resources.
 
 ### Size Comparison
 
@@ -21,9 +46,9 @@ Most code editors today ship hundreds of megabytes of bundled runtimes, web engi
 | Sublime Text | ~40 MB | ~90–140 MB | Native (C++) |
 | VS Code | ~400 MB | ~226+ MB | Electron (Chromium + Node.js) |
 
-LiteEdit is **hundreds of times smaller than VS Code**. The entire app — editor, syntax highlighter, file explorer, session persistence — compiles to a single sub-megabyte binary from ~3,000 lines of Swift. Zero dependencies. Zero frameworks. Just `swift build`.
+The entire app — editor, syntax highlighter, file explorer, session persistence — compiles to a single sub-megabyte binary from ~3,000 lines of Swift. Zero dependencies. Zero frameworks. Just `swift build`.
 
-### What makes it different
+### What Makes It Different
 
 - **Instant launch** — no runtime to bootstrap, opens in milliseconds
 - **Native macOS citizen** — built on AppKit and TextKit, uses system text rendering, respects macOS conventions
@@ -31,7 +56,7 @@ LiteEdit is **hundreds of times smaller than VS Code**. The entire app — edito
 - **Session persistence** — remembers your folder, open tabs, cursor positions, and window state across restarts
 - **Multi-cursor editing** — VS Code-style Cmd+Shift+L to rename across a file in one shot
 
-LiteEdit is not trying to replace VS Code or Sublime Text. It's for when you want to open a project, read code, make quick edits, and move on — without waiting for a 400 MB Electron app to wake up.
+---
 
 ## Features
 
@@ -61,6 +86,8 @@ LiteEdit is not trying to replace VS Code or Sublime Text. It's for when you wan
 | Option+Up/Down | Move line up/down |
 | Cmd+Shift+K | Delete current line |
 | Cmd+Shift+L | Select all occurrences (multi-cursor edit) |
+
+---
 
 ## Install
 

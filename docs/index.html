@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LiteEdit — The Sub-1 MB Code Editor for macOS</title>
-<meta name="description" content="A native macOS code editor built with Swift and AppKit. No Electron, no web views, no bloat. Under 1 MB, launches instantly.">
-<meta property="og:title" content="LiteEdit — The Sub-1 MB Code Editor for macOS">
-<meta property="og:description" content="Native macOS code editor. Hundreds of times smaller than VS Code. Launches instantly.">
+<meta name="description" content="The fastest way to open, browse, and quick-edit code on macOS. A native Swift editor under 1 MB — no Electron, no web views, launches instantly.">
+<meta property="og:title" content="LiteEdit — Fast Native Code Editor for macOS">
+<meta property="og:description" content="Open a repo, browse code, make quick edits, and move on — in seconds. Under 1 MB, native Swift + AppKit, zero bloat.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://arietan.github.io/lite-edit/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LiteEdit — Fast Native Code Editor for macOS">
+<meta name="twitter:description" content="Open a repo, browse code, make quick edits, and move on — in seconds. Under 1 MB, native Swift + AppKit.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -158,6 +161,23 @@ nav{
   color:var(--text-dim);white-space:nowrap;flex-shrink:0;
 }
 
+/* --- Use Cases --- */
+.usecases{padding:80px 0 100px}
+.usecase-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;max-width:800px;
+}
+.usecase{
+  padding:24px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;
+}
+.usecase h3{
+  font-family:var(--mono);font-size:14px;font-weight:600;
+  margin-bottom:8px;letter-spacing:-.01em;
+}
+.usecase p{font-size:14px;color:var(--text-dim);line-height:1.55}
+
 /* --- Features --- */
 .features{padding:80px 0 100px}
 .features-grid{
@@ -237,6 +257,7 @@ footer a:hover{color:var(--text)}
   <div class="nav-inner">
     <div class="nav-brand">Lite<span>Edit</span></div>
     <div class="nav-links">
+      <a href="#usecases">Use Cases</a>
       <a href="#features">Features</a>
       <a href="#shortcuts">Shortcuts</a>
       <a href="https://github.com/arietan/lite-edit">GitHub</a>
@@ -251,8 +272,8 @@ footer a:hover{color:var(--text)}
 <section class="hero">
   <div class="hero-content">
     <div class="hero-badge">Open source &middot; macOS 13+</div>
-    <h1>A code editor <span>under 1 MB</span></h1>
-    <p class="hero-sub">Native Swift + AppKit. No Electron, no web views, no bloat. Launches instantly, barely touches your RAM.</p>
+    <h1>Quick edits, <span>instantly</span></h1>
+    <p class="hero-sub">Open a repo, browse code, make edits, and move on — in seconds. A native macOS editor under 1 MB built with Swift and AppKit. No Electron, no bloat.</p>
     <div class="hero-actions">
       <a href="https://github.com/arietan/lite-edit/releases/latest" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -285,6 +306,31 @@ footer a:hover{color:var(--text)}
         <div class="bar-label">VS Code</div>
         <div class="bar-track"><div class="bar-fill vscode" data-width="100%"></div></div>
         <div class="bar-stat">~400 MB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="usecases" id="usecases">
+  <div class="container">
+    <div class="section-label">Perfect for</div>
+    <h2 class="section-title">The editor you reach for when speed matters</h2>
+    <div class="usecase-grid">
+      <div class="usecase reveal">
+        <h3>Browse a repo</h3>
+        <p>Clone a project, open the folder, and start reading code — no plugins to install, no indexing to wait for.</p>
+      </div>
+      <div class="usecase reveal">
+        <h3>Quick config edits</h3>
+        <p>Change a YAML value, fix a JSON key, update an env file. Open, edit, save, done.</p>
+      </div>
+      <div class="usecase reveal">
+        <h3>Review &amp; read code</h3>
+        <p>Syntax highlighting for 20+ languages, find &amp; replace, and quick open — without loading a full IDE.</p>
+      </div>
+      <div class="usecase reveal">
+        <h3>Side-by-side companion</h3>
+        <p>Keep LiteEdit open alongside your main IDE for scratch files, notes, or quick references.</p>
       </div>
     </div>
   </div>
@@ -367,8 +413,8 @@ footer a:hover{color:var(--text)}
 
 <section class="final-cta">
   <div class="container">
-    <h2>Ready to try it?</h2>
-    <p>Download the DMG, drag to Applications, and you're editing in under a second.</p>
+    <h2>Open, edit, move on</h2>
+    <p>Download the DMG, drag to Applications, and you're editing in under a second. No account, no setup, no telemetry.</p>
     <div class="hero-actions">
       <a href="https://github.com/arietan/lite-edit/releases/latest" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
