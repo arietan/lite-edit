@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build app and create DMG
+        run: bash create-dmg.sh
+
+      - name: Extract version from tag
+        id: version
+        run: echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: LiteEdit ${{ steps.version.outputs.tag }}
+          body: |
+            ## LiteEdit ${{ steps.version.outputs.tag }}
+
+            ### Install
+            1. Download **LiteEdit.dmg** below
+            2. Open the DMG and drag **LiteEdit** to Applications
+            3. Launch from Applications or Spotlight
+
+            Requires macOS 13+.
+          files: LiteEdit.dmg
+          draft: false
+          prerelease: false

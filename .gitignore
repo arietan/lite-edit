@@ -7,3 +7,5 @@ LiteEdit.icns
 *.d
 .DS_Store
 xcuserdata/
+*.dmg
+dmg-staging/
