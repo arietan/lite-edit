@@ -17,11 +17,11 @@ Most code editors today ship hundreds of megabytes of bundled runtimes, web engi
 
 | Editor | App Size | RAM at Idle | Runtime |
 |---|---|---|---|
-| **LiteEdit** | **~728 KB** | **~20 MB** | Native (AppKit) |
-| Sublime Text | ~42 MB | ~90–140 MB | Native (C++) |
+| **LiteEdit** | **< 1 MB** | **~20 MB** | Native (AppKit) |
+| Sublime Text | ~40 MB | ~90–140 MB | Native (C++) |
 | VS Code | ~400 MB | ~226+ MB | Electron (Chromium + Node.js) |
 
-LiteEdit is **~550x smaller than VS Code** and **~60x smaller than Sublime Text**. The entire app — editor, syntax highlighter, file explorer, session persistence — compiles to a single **500 KB binary** from ~3,000 lines of Swift. Zero dependencies. Zero frameworks. Just `swift build`.
+LiteEdit is **hundreds of times smaller than VS Code**. The entire app — editor, syntax highlighter, file explorer, session persistence — compiles to a single sub-megabyte binary from ~3,000 lines of Swift. Zero dependencies. Zero frameworks. Just `swift build`.
 
 ### What makes it different
 
@@ -108,6 +108,10 @@ lite-edit/
 │   └── Theme.swift                         # Colors and fonts
 └── .gitignore
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## License
 
