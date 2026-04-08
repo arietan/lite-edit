@@ -1,0 +1,9 @@
+.build/
+.swiftpm/
+LiteEdit.app/
+LiteEdit.icns
+*.dSYM
+*.o
+*.d
+.DS_Store
+xcuserdata/
