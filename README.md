@@ -6,6 +6,30 @@ A lightweight, fast code editor for macOS — built entirely with Swift and AppK
 ![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
+## Why LiteEdit?
+
+Most code editors today ship hundreds of megabytes of bundled runtimes, web engines, and frameworks before you even open a file. LiteEdit takes the opposite approach: a single native binary under 1 MB that launches instantly and uses minimal resources.
+
+### Size Comparison
+
+| Editor | App Size | RAM at Idle | Runtime |
+|---|---|---|---|
+| **LiteEdit** | **~728 KB** | **~20 MB** | Native (AppKit) |
+| Sublime Text | ~42 MB | ~90–140 MB | Native (C++) |
+| VS Code | ~400 MB | ~226+ MB | Electron (Chromium + Node.js) |
+
+LiteEdit is **~550x smaller than VS Code** and **~60x smaller than Sublime Text**. The entire app — editor, syntax highlighter, file explorer, session persistence — compiles to a single **500 KB binary** from ~3,000 lines of Swift. Zero dependencies. Zero frameworks. Just `swift build`.
+
+### What makes it different
+
+- **Instant launch** — no runtime to bootstrap, opens in milliseconds
+- **Native macOS citizen** — built on AppKit and TextKit, uses system text rendering, respects macOS conventions
+- **Single binary** — no `node_modules`, no embedded Chromium, no support files
+- **Session persistence** — remembers your folder, open tabs, cursor positions, and window state across restarts
+- **Multi-cursor editing** — VS Code-style Cmd+Shift+L to rename across a file in one shot
+
+LiteEdit is not trying to replace VS Code or Sublime Text. It's for when you want to open a project, read code, make quick edits, and move on — without waiting for a 400 MB Electron app to wake up.
+
 ## Features
 
 - **Syntax highlighting** for 20+ languages (Swift, Python, JS/TS, Rust, Go, C/C++, Java, HTML, CSS, JSON, YAML, SQL, and more)
