@@ -139,7 +139,7 @@ nav{
 /* --- Hero Install Command --- */
 .install-cmd{
   display:inline-flex;align-items:center;gap:0;
-  margin-top:20px;
+  margin-top:20px;max-width:100%;
   background:var(--surface);border:1px solid var(--border);
   border-radius:10px;overflow:hidden;
   font-family:var(--mono);font-size:14px;
@@ -148,6 +148,7 @@ nav{
 .install-cmd code{
   padding:12px 16px;color:var(--text-dim);
   user-select:all;white-space:nowrap;
+  overflow-x:auto;min-width:0;
 }
 .install-cmd .prompt{color:var(--accent);user-select:none}
 .copy-btn{
@@ -184,7 +185,7 @@ nav{
   font-family:var(--mono);font-size:12px;
 }
 .install-code code{
-  flex:1;padding:10px 12px;color:var(--text-dim);
+  flex:1;min-width:0;padding:10px 12px;color:var(--text-dim);
   overflow-x:auto;white-space:nowrap;
 }
 .install-code .prompt{color:var(--accent);user-select:none}
@@ -199,8 +200,13 @@ nav{
 }
 .install-link:hover{opacity:.85;text-decoration:none}
 @media(max-width:640px){
+  .install{padding:48px 0 64px}
   .install-grid{grid-template-columns:1fr}
-  .install-cmd code{font-size:12px;padding:10px 12px}
+  .install-option{padding:20px 16px}
+  .install-cmd{max-width:100%}
+  .install-cmd code{font-size:11px;padding:10px 12px}
+  .install-code{max-width:100%}
+  .install-code code{font-size:11px;padding:8px 10px;min-width:0}
 }
 
 /* --- Screenshot Showcase --- */
