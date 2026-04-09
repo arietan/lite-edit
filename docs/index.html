@@ -126,6 +126,83 @@ nav{
 }
 .btn-secondary:hover{border-color:var(--text-dim);text-decoration:none}
 
+/* --- Hero Social Proof --- */
+.hero-proof{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:32px;
+  opacity:0;animation:fadeUp .6s .42s forwards;
+}
+.hero-proof img{height:22px;display:block}
+.hero-proof a{display:inline-flex;transition:opacity .2s}
+.hero-proof a:hover{opacity:.8;text-decoration:none}
+
+/* --- Hero Install Command --- */
+.install-cmd{
+  display:inline-flex;align-items:center;gap:0;
+  margin-top:20px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;
+  font-family:var(--mono);font-size:14px;
+  opacity:0;animation:fadeUp .6s .6s forwards;
+}
+.install-cmd code{
+  padding:12px 16px;color:var(--text-dim);
+  user-select:all;white-space:nowrap;
+}
+.install-cmd .prompt{color:var(--accent);user-select:none}
+.copy-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border:none;
+  background:transparent;border-left:1px solid var(--border);
+  color:var(--text-dim);cursor:pointer;transition:color .2s,background .2s;
+}
+.copy-btn:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.copy-btn.copied{color:#22c55e}
+
+/* --- Install Section --- */
+.install{padding:80px 0 100px}
+.install-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;max-width:800px;
+}
+.install-option{
+  padding:32px 28px;background:var(--surface);
+  display:flex;flex-direction:column;
+}
+.install-option-label{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  color:var(--accent);text-transform:uppercase;letter-spacing:.06em;
+  margin-bottom:12px;
+}
+.install-option h3{font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-.01em}
+.install-option p{font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:16px;flex:1}
+.install-code{
+  display:flex;align-items:center;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+  font-family:var(--mono);font-size:12px;
+}
+.install-code code{
+  flex:1;padding:10px 12px;color:var(--text-dim);
+  overflow-x:auto;white-space:nowrap;
+}
+.install-code .prompt{color:var(--accent);user-select:none}
+.install-code .copy-btn{
+  width:38px;height:38px;flex-shrink:0;
+}
+.install-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;
+  background:var(--accent);color:#fff;transition:opacity .2s;
+  text-align:center;justify-content:center;
+}
+.install-link:hover{opacity:.85;text-decoration:none}
+@media(max-width:640px){
+  .install-grid{grid-template-columns:1fr}
+  .install-cmd code{font-size:12px;padding:10px 12px}
+}
+
 /* --- Screenshot Showcase --- */
 .showcase{padding:60px 0 80px}
 .showcase-frame{
@@ -282,6 +359,7 @@ footer a:hover{color:var(--text)}
   <div class="nav-inner">
     <div class="nav-brand">Lite<span>Edit</span></div>
     <div class="nav-links">
+      <a href="#install">Install</a>
       <a href="#usecases">Use Cases</a>
       <a href="#features">Features</a>
       <a href="#shortcuts">Shortcuts</a>
@@ -299,6 +377,12 @@ footer a:hover{color:var(--text)}
     <div class="hero-badge">Open source &middot; macOS 13+</div>
     <h1>Quick edits, <span>instantly</span></h1>
     <p class="hero-sub">Open a repo, browse code, make edits, and move on — in seconds. A native macOS editor under 1 MB built with Swift and AppKit. No Electron, no bloat.</p>
+    <div class="hero-proof">
+      <a href="https://github.com/arietan/lite-edit"><img src="https://img.shields.io/github/stars/arietan/lite-edit?style=flat-square&logo=github&label=Stars&color=1e1e24&labelColor=111114" alt="GitHub Stars"></a>
+      <a href="https://github.com/jaywcjlove/awesome-mac"><img src="https://img.shields.io/badge/awesome--mac-featured-blue?style=flat-square&logo=apple&labelColor=111114" alt="Featured in awesome-mac"></a>
+      <a href="https://github.com/arietan/lite-edit/releases/latest"><img src="https://img.shields.io/github/downloads/arietan/lite-edit/total?style=flat-square&label=Downloads&color=1e1e24&labelColor=111114" alt="Downloads"></a>
+      <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square&labelColor=111114" alt="MIT License">
+    </div>
     <div class="hero-actions">
       <a href="https://github.com/arietan/lite-edit/releases/latest" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -308,6 +392,12 @@ footer a:hover{color:var(--text)}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
         View Source
       </a>
+    </div>
+    <div class="install-cmd">
+      <code><span class="prompt">$ </span>brew install --cask lite-edit</code>
+      <button class="copy-btn" data-copy="brew install --cask lite-edit" title="Copy to clipboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -321,6 +411,46 @@ footer a:hover{color:var(--text)}
       <button class="showcase-tab active" data-img="https://raw.githubusercontent.com/arietan/lite-edit/main/screenshots/main-editor.png">Editor</button>
       <button class="showcase-tab" data-img="https://raw.githubusercontent.com/arietan/lite-edit/main/screenshots/quick-open.png">Quick Open</button>
       <button class="showcase-tab" data-img="https://raw.githubusercontent.com/arietan/lite-edit/main/screenshots/find-replace.png">Find &amp; Replace</button>
+    </div>
+  </div>
+</section>
+
+<section class="install" id="install">
+  <div class="container">
+    <div class="section-label">Get started</div>
+    <h2 class="section-title">Install in seconds</h2>
+    <div class="install-grid reveal">
+      <div class="install-option">
+        <div class="install-option-label">Homebrew</div>
+        <h3>One command</h3>
+        <p>Install and update via Homebrew Cask.</p>
+        <div class="install-code">
+          <code><span class="prompt">$ </span>brew install --cask lite-edit</code>
+          <button class="copy-btn" data-copy="brew install --cask lite-edit" title="Copy to clipboard">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="install-option">
+        <div class="install-option-label">Direct download</div>
+        <h3>DMG installer</h3>
+        <p>Download, open, drag to Applications.</p>
+        <a href="https://github.com/arietan/lite-edit/releases/latest" class="install-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download DMG
+        </a>
+      </div>
+      <div class="install-option">
+        <div class="install-option-label">Build from source</div>
+        <h3>Clone &amp; build</h3>
+        <p>Requires Xcode CLI Tools and macOS 13+.</p>
+        <div class="install-code">
+          <code><span class="prompt">$ </span>git clone https://github.com/arietan/lite-edit &amp;&amp; cd lite-edit &amp;&amp; bash build.sh</code>
+          <button class="copy-btn" data-copy="git clone https://github.com/arietan/lite-edit && cd lite-edit && bash build.sh" title="Copy to clipboard">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -507,6 +637,21 @@ footer a:hover{color:var(--text)}
       btn.classList.add('active');
       var img = document.getElementById('showcase-img');
       if(img) img.src = btn.getAttribute('data-img');
+    });
+  });
+
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.getAttribute('data-copy');
+      if(!text) return;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.classList.add('copied');
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        setTimeout(function(){
+          btn.classList.remove('copied');
+          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+        }, 2000);
+      });
     });
   });
 })();

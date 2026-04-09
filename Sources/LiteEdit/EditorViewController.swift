@@ -18,6 +18,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
     private var highlighter: SyntaxHighlighter?
 
     private var suppressTextChange = false
+    private var suppressAutoIndent = false
 
     var document: Document? {
         didSet { if isViewLoaded { loadDoc() } }
@@ -127,6 +128,27 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
     }
 
     // MARK: - NSTextViewDelegate
+
+    func textView(_ textView: NSTextView, shouldChangeTextIn range: NSRange,
+                  replacementString text: String?) -> Bool {
+        guard !suppressAutoIndent, let text = text, text == "\n" else { return true }
+
+        let ns = textView.string as NSString
+        let lineRange = ns.lineRange(for: NSRange(location: min(range.location, ns.length), length: 0))
+        let line = ns.substring(with: lineRange)
+
+        var indent = ""
+        for ch in line {
+            if ch == " " || ch == "\t" { indent.append(ch) }
+            else { break }
+        }
+        guard !indent.isEmpty else { return true }
+
+        suppressAutoIndent = true
+        textView.insertText("\n" + indent, replacementRange: range)
+        suppressAutoIndent = false
+        return false
+    }
 
     func textDidChange(_ n: Notification) {
         guard !suppressTextChange else { return }
