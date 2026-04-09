@@ -11,11 +11,25 @@ The fastest way to open, browse, and quick-edit code on macOS — a native edito
 
 ---
 
-## Demo
+## Screenshots
 
-<!-- Replace with a GIF or screenshot of LiteEdit in action -->
-<!-- Recommended: record a 20-30s screen capture showing: open folder → browse tree → quick open → edit → save -->
-> **Screenshot / GIF coming soon** — see the [website](https://arietan.github.io/lite-edit/) for a live preview.
+![LiteEdit — Main Editor](screenshots/main-editor.png)
+
+*Syntax highlighting, sidebar file tree, tabbed editing, line numbers, and status bar — all in under 1 MB.*
+
+<details>
+<summary>Quick Open (Cmd+P)</summary>
+
+![Quick Open](screenshots/quick-open.png)
+
+</details>
+
+<details>
+<summary>Find & Replace (Cmd+F)</summary>
+
+![Find & Replace](screenshots/find-replace.png)
+
+</details>
 
 ---
 
