@@ -17,11 +17,21 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
     private var lineNumbers: LineNumberView?
     private var highlighter: SyntaxHighlighter?
 
+    private static var highlighterCache: [Document.Language: SyntaxHighlighter] = [:]
+    private var highlightWorkItem: DispatchWorkItem?
+
     private var suppressTextChange = false
     private var suppressAutoIndent = false
 
     var document: Document? {
-        didSet { if isViewLoaded { loadDoc() } }
+        didSet { if isViewLoaded && document !== oldValue { loadDoc() } }
+    }
+
+    private static func cachedHighlighter(for language: Document.Language) -> SyntaxHighlighter {
+        if let h = highlighterCache[language] { return h }
+        let h = SyntaxHighlighter(language: language)
+        highlighterCache[language] = h
+        return h
     }
 
     // MARK: - View lifecycle
@@ -112,12 +122,53 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
 
     private func loadDoc() {
         guard let doc = document else { return }
+        highlightWorkItem?.cancel()
+        highlighter = Self.cachedHighlighter(for: doc.language)
+
+        let lm = textView.layoutManager!
         suppressTextChange = true
-        textView.string = doc.content
+
+        if let cached = doc.cachedTextStorage {
+            lm.replaceTextStorage(cached)
+        } else {
+            let para = textView.defaultParagraphStyle ?? NSParagraphStyle.default
+            let ts = NSTextStorage(string: doc.content, attributes: [
+                .font: Theme.editorFont,
+                .foregroundColor: Theme.foreground,
+                .paragraphStyle: para,
+            ])
+            lm.replaceTextStorage(ts)
+            doc.cachedTextStorage = ts
+            highlightVisibleThenAll()
+        }
+
         suppressTextChange = false
-        highlighter = SyntaxHighlighter(language: doc.language)
-        rehighlightAll()
         lineNumbers?.needsDisplay = true
+    }
+
+    private func highlightVisibleThenAll() {
+        guard let ts = textView.textStorage, ts.length > 0 else { return }
+        let visibleRange = visibleCharacterRange()
+        ts.beginEditing()
+        highlighter?.highlight(ts, in: visibleRange)
+        ts.endEditing()
+
+        if visibleRange.length < ts.length {
+            let item = DispatchWorkItem { [weak self] in
+                self?.rehighlightAll()
+            }
+            highlightWorkItem = item
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02, execute: item)
+        }
+    }
+
+    private func visibleCharacterRange() -> NSRange {
+        guard let lm = textView.layoutManager, let tc = textView.textContainer else {
+            return NSRange(location: 0, length: textView.textStorage?.length ?? 0)
+        }
+        let visibleRect = scrollView.documentVisibleRect
+        let glyphRange = lm.glyphRange(forBoundingRect: visibleRect, in: tc)
+        return lm.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
     }
 
     private func rehighlightAll() {

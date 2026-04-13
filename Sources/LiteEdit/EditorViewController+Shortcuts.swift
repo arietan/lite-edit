@@ -65,6 +65,8 @@ extension EditorViewController {
         case (.option, 125):            moveLineDown();        return true
         case ([.command, .shift], 40):  deleteCurrentLine();   return true
         case ([.command, .shift], 37):  selectAllOccurrences();return true
+        case ([], 48):                  if indentSelectedLines() { return true }; return false
+        case (.shift, 48):              unindentSelectedLines(); return true
         default:                        return false
         }
     }
@@ -343,6 +345,56 @@ extension EditorViewController {
                                                 stillSelecting: false)
             }
         }
+    }
+}
+
+// MARK: - Tab / Shift+Tab — indent / unindent selected lines
+
+extension EditorViewController {
+
+    /// Indents all selected lines when the selection spans multiple lines.
+    /// Returns `false` (pass-through to default Tab behavior) for single-line or empty selections.
+    fileprivate func indentSelectedLines() -> Bool {
+        let sel = textView.selectedRange()
+        guard sel.length > 0 else { return false }
+
+        let ns = textView.string as NSString
+        guard ns.substring(with: sel).contains("\n") else { return false }
+
+        let lineRange = ns.lineRange(for: sel)
+        let text = ns.substring(with: lineRange)
+
+        var indented = "\t" + text.replacingOccurrences(of: "\n", with: "\n\t")
+        if text.hasSuffix("\n") { indented = String(indented.dropLast()) }
+
+        replaceText(in: lineRange, with: indented)
+        textView.setSelectedRange(NSRange(location: lineRange.location,
+                                          length: (indented as NSString).length))
+        return true
+    }
+
+    /// Removes one level of indentation (one tab or up to 4 leading spaces) from
+    /// each selected line, or the current line when nothing is selected.
+    fileprivate func unindentSelectedLines() {
+        let sel = textView.selectedRange()
+        let ns = textView.string as NSString
+        let lineRange = ns.lineRange(for: sel)
+        let text = ns.substring(with: lineRange)
+
+        let lines = text.components(separatedBy: "\n")
+        let result = lines.enumerated().map { i, line -> String in
+            if i == lines.count - 1 && line.isEmpty { return line }
+            if line.hasPrefix("\t") { return String(line.dropFirst()) }
+            var s = line[...]
+            var n = 0
+            while s.hasPrefix(" ") && n < 4 { s = s.dropFirst(); n += 1 }
+            return String(s)
+        }.joined(separator: "\n")
+
+        guard result != text else { return }
+        replaceText(in: lineRange, with: result)
+        textView.setSelectedRange(NSRange(location: lineRange.location,
+                                          length: (result as NSString).length))
     }
 }
 

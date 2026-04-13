@@ -5,7 +5,7 @@ protocol TabBarViewDelegate: AnyObject {
     func tabBarDidCloseTab(at index: Int)
 }
 
-struct TabItem {
+struct TabItem: Equatable {
     let title: String
     let isModified: Bool
 }
@@ -13,8 +13,8 @@ struct TabItem {
 final class TabBarView: NSView {
     weak var delegate: TabBarViewDelegate?
 
-    var tabs: [TabItem] = [] { didSet { rebuildTabs() } }
-    var selectedIndex: Int = 0 { didSet { updateAppearance() } }
+    private(set) var tabs: [TabItem] = []
+    private(set) var selectedIndex: Int = 0
 
     private let tabHeight: CGFloat = 32
     private let tabWidth: CGFloat = 180
@@ -40,6 +40,33 @@ final class TabBarView: NSView {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError() }
+
+    // MARK: - Public update API
+
+    func setTabs(_ newTabs: [TabItem], selectedIndex idx: Int) {
+        let needsRebuild = newTabs.count != tabs.count
+        tabs = newTabs
+        selectedIndex = idx
+        if needsRebuild {
+            rebuildTabs()
+        } else {
+            updateLabels()
+            updateAppearance()
+        }
+    }
+
+    func selectTab(at index: Int) {
+        guard index != selectedIndex else { return }
+        selectedIndex = index
+        updateAppearance()
+    }
+
+    func updateTab(at index: Int, item: TabItem) {
+        guard index >= 0, index < tabs.count, tabs[index] != item else { return }
+        tabs[index] = item
+        let displayTitle = item.isModified ? "● \(item.title)" : item.title
+        titleLabels[index].stringValue = displayTitle
+    }
 
     override func layout() {
         super.layout()
@@ -108,6 +135,13 @@ final class TabBarView: NSView {
         addSubview(bottomBorder)
         needsLayout = true
         updateAppearance()
+    }
+
+    private func updateLabels() {
+        for (i, tab) in tabs.enumerated() where i < titleLabels.count {
+            let displayTitle = tab.isModified ? "● \(tab.title)" : tab.title
+            titleLabels[i].stringValue = displayTitle
+        }
     }
 
     private func updateAppearance() {

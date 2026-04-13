@@ -74,7 +74,7 @@ final class MainWindowController: NSWindowController,
 
         tabBar = TabBarView()
         tabBar.delegate = self
-        tabBar.autoresizingMask = [.width, .minYMargin]
+        tabBar.autoresizingMask = [.minYMargin]
         tabBar.frame = NSRect(x: 0, y: cv.bounds.height - tabH, width: cv.bounds.width, height: tabH)
         cv.addSubview(tabBar)
 
@@ -113,9 +113,28 @@ final class MainWindowController: NSWindowController,
         splitView.setHoldingPriority(.defaultHigh, forSubviewAt: 0)
         splitView.setHoldingPriority(.defaultLow, forSubviewAt: 1)
 
+        updateTabBarFrame()
+
         DispatchQueue.main.async { [weak self] in
             self?.splitView.setPosition(220, ofDividerAt: 0)
         }
+    }
+
+    private func updateTabBarFrame() {
+        guard let cv = window?.contentView else { return }
+        let tabH: CGFloat = 32
+        let editorX: CGFloat
+        if sidebarVC.view.isHidden {
+            editorX = 0
+        } else {
+            editorX = sidebarVC.view.frame.width + splitView.dividerThickness
+        }
+        tabBar.frame = NSRect(
+            x: editorX,
+            y: cv.bounds.height - tabH,
+            width: cv.bounds.width - editorX,
+            height: tabH
+        )
     }
 
     // MARK: - Cursor persistence across tab switches
@@ -123,14 +142,20 @@ final class MainWindowController: NSWindowController,
     private func saveCursorPosition() {
         guard let doc = curDoc else { return }
         doc.cursorPosition = editorVC.textView.selectedRange().location
+        doc.scrollOffset = editorVC.scrollView.contentView.bounds.origin
     }
 
     private func restoreCursorPosition() {
         guard let doc = curDoc else { return }
-        let pos = min(doc.cursorPosition, (editorVC.textView.string as NSString).length)
-        let range = NSRange(location: pos, length: 0)
-        editorVC.textView.setSelectedRange(range)
-        editorVC.textView.scrollRangeToVisible(range)
+        let len = (editorVC.textView.string as NSString).length
+        let pos = min(doc.cursorPosition, len)
+        editorVC.textView.setSelectedRange(NSRange(location: pos, length: 0))
+        if doc.scrollOffset != .zero {
+            editorVC.scrollView.contentView.scroll(to: doc.scrollOffset)
+            editorVC.scrollView.reflectScrolledClipView(editorVC.scrollView.contentView)
+        } else {
+            editorVC.textView.scrollRangeToVisible(NSRange(location: pos, length: 0))
+        }
     }
 
     // MARK: - Document management
@@ -303,6 +328,7 @@ final class MainWindowController: NSWindowController,
             splitView.setPosition(0, ofDividerAt: 0)
             sidebarVC.view.isHidden = true
         }
+        updateTabBarFrame()
     }
 
     func showFind() {
@@ -378,8 +404,8 @@ final class MainWindowController: NSWindowController,
     // MARK: - Refresh
 
     private func refreshTabs() {
-        tabBar.tabs = documents.map { TabItem(title: $0.title, isModified: $0.isModified) }
-        tabBar.selectedIndex = curIdx
+        let items = documents.map { TabItem(title: $0.displayName, isModified: $0.isModified) }
+        tabBar.setTabs(items, selectedIndex: curIdx)
     }
 
     private func refreshStatus() {
@@ -408,9 +434,17 @@ final class MainWindowController: NSWindowController,
         return false
     }
 
+    func splitViewDidResizeSubviews(_ notification: Notification) {
+        updateTabBarFrame()
+    }
+
     // MARK: - EditorViewControllerDelegate
 
-    func editorTextDidChange(_ vc: EditorViewController) { refreshTabs() }
+    func editorTextDidChange(_ vc: EditorViewController) {
+        if let doc = curDoc {
+            tabBar.updateTab(at: curIdx, item: TabItem(title: doc.displayName, isModified: doc.isModified))
+        }
+    }
     func editorCursorMoved(_ vc: EditorViewController, line: Int, col: Int) { statusBar.updateCursor(line: line, col: col) }
 
     // MARK: - TabBarViewDelegate
@@ -420,7 +454,8 @@ final class MainWindowController: NSWindowController,
         saveCursorPosition()
         curIdx = index
         editorVC.document = documents[index]
-        refreshTabs(); refreshStatus()
+        tabBar.selectTab(at: curIdx)
+        refreshStatus()
         window?.title = "LiteEdit — \(curDoc?.displayName ?? "Untitled")"
         if let url = documents[index].fileURL { sidebarVC.revealFile(url) }
         restoreCursorPosition()

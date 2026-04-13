@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 
 final class Document {
     var fileURL: URL?
@@ -6,6 +6,8 @@ final class Document {
     var isModified: Bool = false
     var language: Language
     var cursorPosition: Int = 0
+    var scrollOffset: NSPoint = .zero
+    var cachedTextStorage: NSTextStorage?
     private var savedContent: String
 
     init(fileURL: URL? = nil, content: String = "", language: Language = .plainText) {

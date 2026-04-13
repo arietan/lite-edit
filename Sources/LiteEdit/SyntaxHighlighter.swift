@@ -129,13 +129,18 @@ final class SyntaxHighlighter {
             ]
         case .markdown:
             defs = [
+                ("^>+\\s?.*$", Theme.comment),
+                ("^\\s*(\\*{3,}|-{3,}|_{3,})\\s*$", Theme.comment),
+                ("^\\s*[\\-\\*+]\\s", Theme.keyword),
+                ("^\\s*\\d+\\.\\s", Theme.keyword),
+                ("!?\\[([^\\]]+)\\]\\(([^)]+)\\)", Theme.type),
+                ("(?<!\\*)\\*(?![\\s*])[^*\\n]+?(?<![\\s*])\\*(?!\\*)", Theme.type),
+                ("(?<!\\w)_(?![\\s_])[^_\\n]+?(?<![\\s_])_(?!\\w)", Theme.type),
+                ("\\*\\*(?:[^*\\n]|\\*(?!\\*))+?\\*\\*", Theme.function),
+                ("__(?:[^_\\n]|_(?!_))+?__", Theme.function),
                 ("^#{1,6}\\s+.*$", Theme.keyword),
-                ("\\*\\*[^*]+\\*\\*", Theme.function),
-                ("\\*[^*]+\\*", Theme.type),
-                ("`[^`]+`", Theme.string),
+                ("`[^`\\n]+`", Theme.string),
                 ("```[\\s\\S]*?```", Theme.string),
-                ("^[\\-\\*]\\s", Theme.keyword),
-                ("\\[([^\\]]+)\\]\\(([^)]+)\\)", Theme.type),
             ]
         case .shell:
             defs = [
