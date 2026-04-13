@@ -1,0 +1,64 @@
+---
+description: Release workflow for publishing a new LiteEdit version to GitHub with changelog, tag, and landing page update.
+alwaysApply: false
+---
+
+# LiteEdit Release Workflow
+
+When the user asks to publish, release, or ship a new version, follow these steps in order.
+
+## 1. Commit Outstanding Changes
+
+- `git status` and `git diff --stat` to review what's changed.
+- Stage and commit with a descriptive message summarizing all changes.
+
+## 2. Determine the Version
+
+- `git tag --sort=-creatordate | head -5` to find the latest tag.
+- Bump **minor** (v1.1.0 → v1.2.0) for features/enhancements.
+- Bump **patch** (v1.1.0 → v1.1.1) for bug-fix-only releases.
+- Ask the user only if the bump is ambiguous.
+
+## 3. Tag and Push
+
+```bash
+git tag vX.Y.Z
+git push origin main --tags
+```
+
+## 4. Write Release Notes
+
+Structure the changelog under clear sections — only include sections that have entries:
+
+- **Editor Enhancements** — new editing features (shortcuts, behaviors)
+- **Bug Fixes** — things that were broken and are now fixed
+- **Performance** — speed, memory, or responsiveness improvements
+- **Landing Page & Community** — docs, website, badges, CI, community infra
+
+End with a `**Full Changelog**` link: `https://github.com/arietan/lite-edit/compare/vOLD...vNEW`
+
+## 5. Create or Update the GitHub Release
+
+Write notes to a temp file (avoids heredoc escaping issues), then:
+
+```bash
+gh release create vX.Y.Z --title "vX.Y.Z" --notes-file .release-notes.md
+# OR if the release already exists (e.g. from a CI workflow):
+gh release edit vX.Y.Z --title "vX.Y.Z" --notes-file .release-notes.md
+```
+
+Delete the temp file after.
+
+## 6. Update the Landing Page (`docs/index.html`)
+
+Check for anything that needs updating:
+
+- **Shortcuts table** — add rows for any new keyboard shortcuts.
+- **Features grid** — add a card if a major new capability was added.
+- **Download links** — these use `/releases/latest` and auto-resolve; no change needed.
+
+Commit and push landing page changes separately so the diff is clean.
+
+## 7. Update MEMORY.md
+
+Record the release version and date in the Recent Changes section.
