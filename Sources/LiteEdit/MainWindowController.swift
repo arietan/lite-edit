@@ -158,6 +158,16 @@ final class MainWindowController: NSWindowController,
         }
     }
 
+    /// Defers cursor restoration to the next run-loop iteration so it
+    /// survives the layout pass that `replaceTextStorage` triggers.
+    private func deferredRestoreCursor() {
+        let targetDoc = curDoc
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, self.curDoc === targetDoc else { return }
+            self.restoreCursorPosition()
+        }
+    }
+
     // MARK: - Document management
 
     func newDocument() {
@@ -188,7 +198,7 @@ final class MainWindowController: NSWindowController,
             refreshTabs(); refreshStatus()
             RecentItems.addFile(url)
             sidebarVC.revealFile(url)
-            restoreCursorPosition()
+            deferredRestoreCursor()
             return
         }
         do {
@@ -215,7 +225,7 @@ final class MainWindowController: NSWindowController,
             window?.title = "LiteEdit — \(documents[i].displayName)"
             RecentItems.addFile(url)
             sidebarVC.revealFile(url)
-            restoreCursorPosition()
+            deferredRestoreCursor()
             return
         }
         do {
@@ -284,7 +294,7 @@ final class MainWindowController: NSWindowController,
         curIdx = min(curIdx, documents.count - 1)
         editorVC.document = documents[curIdx]
         refreshTabs(); refreshStatus()
-        restoreCursorPosition()
+        deferredRestoreCursor()
     }
 
     func openFolder() {
@@ -458,7 +468,7 @@ final class MainWindowController: NSWindowController,
         refreshStatus()
         window?.title = "LiteEdit — \(curDoc?.displayName ?? "Untitled")"
         if let url = documents[index].fileURL { sidebarVC.revealFile(url) }
-        restoreCursorPosition()
+        deferredRestoreCursor()
     }
 
     func tabBarDidCloseTab(at index: Int) {
