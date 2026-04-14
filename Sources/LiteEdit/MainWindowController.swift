@@ -147,14 +147,23 @@ final class MainWindowController: NSWindowController,
 
     private func restoreCursorPosition() {
         guard let doc = curDoc else { return }
-        let len = (editorVC.textView.string as NSString).length
+        let tv = editorVC.textView!
+        let len = (tv.string as NSString).length
         let pos = min(doc.cursorPosition, len)
-        editorVC.textView.setSelectedRange(NSRange(location: pos, length: 0))
+
+        // replaceTextStorage invalidates layout; NSLayoutManager only
+        // lays out lazily (visible area).  Force layout up to the target
+        // so the text view's frame is tall enough for scrolling.
+        if pos > 0, let lm = tv.layoutManager {
+            lm.ensureLayout(forCharacterRange: NSRange(location: 0, length: min(pos + 1, len)))
+        }
+
+        tv.setSelectedRange(NSRange(location: pos, length: 0))
         if doc.scrollOffset != .zero {
             editorVC.scrollView.contentView.scroll(to: doc.scrollOffset)
             editorVC.scrollView.reflectScrolledClipView(editorVC.scrollView.contentView)
         } else {
-            editorVC.textView.scrollRangeToVisible(NSRange(location: pos, length: 0))
+            tv.scrollRangeToVisible(NSRange(location: pos, length: 0))
         }
     }
 
