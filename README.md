@@ -107,6 +107,18 @@ The entire app — editor, syntax highlighter, file explorer, session persistenc
 
 Download the latest DMG from the [Releases page](https://github.com/arietan/lite-edit/releases/latest), open it, and drag LiteEdit to Applications.
 
+> **macOS Gatekeeper note:** Because the app is not signed with an Apple Developer certificate, macOS may show *"LiteEdit is damaged and can't be opened."* This is a false positive — run the command below to clear the quarantine flag, or install via Homebrew which handles it automatically:
+>
+> ```bash
+> xattr -rd com.apple.quarantine /Applications/LiteEdit.app
+> ```
+
+**Or install with Homebrew** (no quarantine issue):
+
+```bash
+brew install --cask lite-edit
+```
+
 ## Build from Source
 
 Requires **Xcode Command Line Tools** and **macOS 13+**.
