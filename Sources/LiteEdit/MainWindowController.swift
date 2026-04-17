@@ -148,20 +148,24 @@ final class MainWindowController: NSWindowController,
     private func restoreCursorPosition() {
         guard let doc = curDoc else { return }
         let tv = editorVC.textView!
+        let sv = editorVC.scrollView!
         let len = (tv.string as NSString).length
         let pos = min(doc.cursorPosition, len)
 
-        // replaceTextStorage invalidates layout; NSLayoutManager only
-        // lays out lazily (visible area).  Force layout up to the target
-        // so the text view's frame is tall enough for scrolling.
-        if pos > 0, let lm = tv.layoutManager {
-            lm.ensureLayout(forCharacterRange: NSRange(location: 0, length: min(pos + 1, len)))
+        if let lm = tv.layoutManager, len > 0 {
+            if doc.scrollOffset != .zero {
+                // Full layout needed so the text view frame is tall enough
+                // for the entire viewport, not just up to the cursor.
+                lm.ensureLayout(forCharacterRange: NSRange(location: 0, length: len))
+            } else if pos > 0 {
+                lm.ensureLayout(forCharacterRange: NSRange(location: 0, length: min(pos + 1, len)))
+            }
         }
 
         tv.setSelectedRange(NSRange(location: pos, length: 0))
         if doc.scrollOffset != .zero {
-            editorVC.scrollView.contentView.scroll(to: doc.scrollOffset)
-            editorVC.scrollView.reflectScrolledClipView(editorVC.scrollView.contentView)
+            sv.contentView.scroll(to: doc.scrollOffset)
+            sv.reflectScrolledClipView(sv.contentView)
         } else {
             tv.scrollRangeToVisible(NSRange(location: pos, length: 0))
         }
