@@ -116,7 +116,7 @@ Download the latest DMG from the [Releases page](https://github.com/arietan/lite
 **Or install with Homebrew** (no quarantine issue):
 
 ```bash
-brew install --cask lite-edit
+brew install arietan/lite-edit/lite-edit
 ```
 
 ## Build from Source
