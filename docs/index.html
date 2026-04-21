@@ -254,14 +254,11 @@ nav{
 .bar-track{flex:1;height:36px;position:relative;border-radius:6px;overflow:hidden;background:var(--surface)}
 .bar-fill{
   height:100%;border-radius:6px;
-  display:flex;align-items:center;padding:0 12px;
-  font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;
-  white-space:nowrap;
   transform-origin:left;transform:scaleX(0);
   transition:transform 1s cubic-bezier(.22,1,.36,1);
 }
 .bar-fill.visible{transform:scaleX(1)}
-.bar-fill.lite{background:var(--accent);min-width:60px}
+.bar-fill.lite{background:var(--accent);min-width:6px}
 .bar-fill.sublime{background:#52525b;width:10.5%}
 .bar-fill.vscode{background:#52525b;width:100%}
 .bar-stat{
@@ -468,12 +465,12 @@ footer a:hover{color:var(--text)}
     <div class="bars">
       <div class="bar-row">
         <div class="bar-label is-lite">LiteEdit</div>
-        <div class="bar-track"><div class="bar-fill lite" data-width="2.5%"></div></div>
+        <div class="bar-track"><div class="bar-fill lite" data-width="0.25%"></div></div>
         <div class="bar-stat">&lt; 1 MB</div>
       </div>
       <div class="bar-row">
         <div class="bar-label">Sublime Text</div>
-        <div class="bar-track"><div class="bar-fill sublime" data-width="10.5%"></div></div>
+        <div class="bar-track"><div class="bar-fill sublime" data-width="10%"></div></div>
         <div class="bar-stat">~40 MB</div>
       </div>
       <div class="bar-row">
