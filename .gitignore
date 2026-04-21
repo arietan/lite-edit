@@ -1,7 +1,6 @@
 .build/
 .swiftpm/
 LiteEdit.app/
-LiteEdit.icns
 *.dSYM
 *.o
 *.d
