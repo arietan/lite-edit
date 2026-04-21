@@ -297,12 +297,24 @@ extension SidebarViewController: NSMenuDelegate {
             let newTabItem = NSMenuItem(title: "Open in New Tab", action: #selector(contextOpenInNewTab(_:)), keyEquivalent: "")
             newTabItem.target = self
             menu.addItem(newTabItem)
+
+            menu.addItem(.separator())
         }
+
+        let revealItem = NSMenuItem(title: "Reveal in Finder", action: #selector(contextRevealInFinder(_:)), keyEquivalent: "")
+        revealItem.target = self
+        menu.addItem(revealItem)
     }
 
     @objc private func contextOpen(_ sender: Any?) {
         let row = outlineView.clickedRow
         guard row >= 0, let fi = outlineView.item(atRow: row) as? FileItem, !fi.isDirectory else { return }
         sidebarDelegate?.sidebarDidSelectFile(fi.url, inNewTab: false)
+    }
+
+    @objc private func contextRevealInFinder(_ sender: Any?) {
+        let row = outlineView.clickedRow
+        guard row >= 0, let fi = outlineView.item(atRow: row) as? FileItem else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([fi.url])
     }
 }
