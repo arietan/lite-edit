@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+      issues: write
     steps:
       - name: Get total download count
         id: downloads
@@ -21,22 +22,16 @@ jobs:
           echo "total=$total" >> "$GITHUB_OUTPUT"
           echo "Total downloads: $total"
 
-      - name: Send email if threshold reached
+      - name: Open milestone issue
         if: fromJSON(steps.downloads.outputs.total) >= 500
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: nnh.mike@gmail.com
-          password: ${{ secrets.ALERT_EMAIL_APP_PASSWORD }}
-          subject: "lite-edit hit ${{ steps.downloads.outputs.total }} downloads!"
-          to: nnh.mike@gmail.com
-          from: LiteEdit Bot <nnh.mike@gmail.com>
-          body: |
-            Congratulations! arietan/lite-edit has reached ${{ steps.downloads.outputs.total }} total release downloads (threshold: 500).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create -R ${{ github.repository }} \
+            --title "lite-edit reached ${{ steps.downloads.outputs.total }} downloads!" \
+            --body "arietan/lite-edit has reached **${{ steps.downloads.outputs.total }}** total release downloads (threshold: 500).
 
-            View releases: https://github.com/arietan/lite-edit/releases
+          View releases: https://github.com/arietan/lite-edit/releases"
 
       - name: Disable this workflow after alert
         if: fromJSON(steps.downloads.outputs.total) >= 500
